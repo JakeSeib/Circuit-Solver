@@ -7,11 +7,11 @@ import ElementChooser from '../ElementChooser/ElementChooser'
 const Circuit = () => {
   return <Container className='circuit-container'>
     <Row>
-      <Col><ElementChooser></ElementChooser></Col>
-      <Col><ElementChooser></ElementChooser></Col>
-      <Col><ElementChooser></ElementChooser></Col>
-      <Col><ElementChooser></ElementChooser></Col>
-      <Col><ElementChooser></ElementChooser></Col>
+      <Col><ElementChooser type='wire'></ElementChooser></Col>
+      <Col><ElementChooser type='wire'></ElementChooser></Col>
+      <Col><ElementChooser type='resistor'></ElementChooser></Col>
+      <Col><ElementChooser type='wire'></ElementChooser></Col>
+      <Col><ElementChooser type='wire'></ElementChooser></Col>
     </Row>
   </Container>
 }
