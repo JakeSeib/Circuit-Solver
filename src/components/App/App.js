@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom'
 
 // import AuthenticatedRoute from '../AuthenticatedRoute/AuthenticatedRoute'
 import AutoDismissAlert from '../AutoDismissAlert/AutoDismissAlert'
-import Circuits from '../Circuits/Circuits'
+import Circuit from '../Circuits/Circuit/Circuit'
 
 // unused auth routes and components
 
@@ -59,7 +59,7 @@ class App extends Component {
         ))}
         <main className="container">
           <Route path='/circuits' render={() => (
-            <Circuits msgAlert={this.msgAlert} />
+            <Circuit msgAlert={this.msgAlert} />
           )} />
         </main>
       </Fragment>
