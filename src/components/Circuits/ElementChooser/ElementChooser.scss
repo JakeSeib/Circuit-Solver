@@ -1,0 +1,7 @@
+@import '../../../variables.scss';
+
+.circuit-element {
+  border: 2px solid $border-black;
+  border-radius: 4px;
+  font-size: 1.4em;
+}

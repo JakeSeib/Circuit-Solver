@@ -6,11 +6,12 @@
 
 # Circuit elements
 - Choose between wire and special component
-  - Special components: resistor, capacitor, diode
+  - Special components: resistor
+    - Strech: diode, capacitor
   - Wire
 - Both wire and special components
   - choose different directions to connect; only one direction can be connected (no multi-connections can be chosen)
   - also can choose to disconnect
 
 # Components
-- https://i.pinimg.com/originals/10/ad/59/10ad5908dc1c0b23d6c7c39151e1dda3.jpg
+- [Images](https://i.pinimg.com/originals/10/ad/59/10ad5908dc1c0b23d6c7c39151e1dda3.jpg)
