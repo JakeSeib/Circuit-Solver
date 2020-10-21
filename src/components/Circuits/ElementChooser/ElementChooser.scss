@@ -1,6 +1,6 @@
 @import '../../../variables.scss';
 
-.circuit-element {
+@mixin element-base($highlight: false) {
   border: 2px solid $border-black;
   border-radius: 4px;
   font-size: 1.4em;
@@ -8,54 +8,59 @@
   overflow: hidden;
   position: relative;
   width: 150px;
+
+  @if $highlight {
+    background-color: $highlight-orange;
+  }
 }
 
-.circuit-element-0::before {
-  background-image: url('public/cs-test-bg.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  content: '';
-  height: 100%;
-  position: absolute;
-  // top: -50%;
-  // left: -50%;
-  width: 100%;
-  z-index: -1;
+@mixin element-image($highlight: false) {
+  ::before {
+    background-image: url('public/cs-test-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    content: '';
+    height: 100%;
+    left: 0%;
+    // top: 0%;
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+  }
 }
 
-.circuit-element-1::before {
-  background-image: url('public/cs-test-bg.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  content: '';
-  height: 100%;
-  position: absolute;
-  transform: rotate(90deg);
-  width: 100%;
-  z-index: -1;
-
+.circuit-element {
+  @include element-base
 }
 
-.circuit-element-2::before {
-  background-image: url('public/cs-test-bg.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  content: '';
-  height: 100%;
-  position: absolute;
-  transform: rotate(180deg);
-  width: 100%;
-  z-index: -1;
+.circuit-element-highlight {
+  @include element-base($highlight: true)
 }
 
-.circuit-element-3::before {
-  background-image: url('public/cs-test-bg.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  content: '';
-  height: 100%;
-  position: absolute;
-  transform: rotate(270deg);
-  width: 100%;
-  z-index: -1;
+.circuit-element-0 {
+  @include element-image;
+}
+
+.circuit-element-1 {
+  @include element-image;
+
+  ::before {
+    transform: rotate(90deg);
+  }
+}
+
+.circuit-element-2 {
+  @include element-image;
+
+  ::before {
+    transform: rotate(180deg);
+  }
+}
+
+.circuit-element-3 {
+  @include element-image;
+
+  ::before {
+    transform: rotate(270deg);
+  }
 }
