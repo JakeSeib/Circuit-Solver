@@ -13,9 +13,8 @@ const ElementChooser = ({ type }) => {
   }
 
   const elementJSX = (
-    <Container className={`circuit-element ${getTransformClass(direction)}`}>
+    <Container className={`circuit-element ${getTransformClass(direction)}`} onClick={event => { handleDirectionSwitch(event) }}>
       <p>{type} {direction}</p>
-      <button onClick={event => { handleDirectionSwitch(event) }}>Cycle direction</button>
     </Container>
   )
 
