@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container'
 
 import '../../../index.scss'
 import './ElementChooser.scss'
+import getTransformClass from './getTransformClass.js'
 
 const ElementChooser = ({ type }) => {
   const [direction, setDirection] = useState(0)
@@ -12,9 +13,8 @@ const ElementChooser = ({ type }) => {
   }
 
   const elementJSX = (
-    <Container className='circuit-element'>
+    <Container className={`circuit-element ${getTransformClass(direction)}`} onClick={event => { handleDirectionSwitch(event) }}>
       <p>{type} {direction}</p>
-      <button onClick={event => { handleDirectionSwitch(event) }}>Cycle direction</button>
     </Container>
   )
 
