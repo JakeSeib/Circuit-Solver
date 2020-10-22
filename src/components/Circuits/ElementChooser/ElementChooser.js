@@ -23,7 +23,7 @@ const ElementChooser = ({ type }) => {
 
   const elementJSX = (
     <Container
-      className={`${highlighted ? 'circuit-element-highlight' : 'circuit-element'} ${getTransformClass(direction)}`}
+      className={`circuit-element ${highlighted ? 'circuit-element--highlight' : ''} ${getTransformClass(direction)}`}
       onClick={event => { handleDirectionSwitch(event) }}
       onMouseEnter={event => { addHighlight(event) }}
       onMouseLeave={event => { removeHighlight(event) }}>

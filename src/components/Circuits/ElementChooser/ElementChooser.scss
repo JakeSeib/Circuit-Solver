@@ -1,20 +1,6 @@
-@import '../../../variables.scss';
+@import '../../../variables';
 
-@mixin element-base($highlight: false) {
-  border: 2px solid $border-black;
-  border-radius: 4px;
-  font-size: 1.4em;
-  height: 150px;
-  overflow: hidden;
-  position: relative;
-  width: 150px;
-
-  @if $highlight {
-    background-color: $highlight-orange;
-  }
-}
-
-@mixin element-image($highlight: false) {
+@mixin element-image {
   ::before {
     background-image: url('public/cs-test-bg.png');
     background-repeat: no-repeat;
@@ -30,18 +16,24 @@
 }
 
 .circuit-element {
-  @include element-base
+  border: 2px solid $border-black;
+  border-radius: 4px;
+  font-size: 1.4em;
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+  width: 150px;
 }
 
-.circuit-element-highlight {
-  @include element-base($highlight: true)
+.circuit-element--highlight {
+  background-color: $highlight-orange;
 }
 
-.circuit-element-0 {
+.circuit-element--rotation-0 {
   @include element-image;
 }
 
-.circuit-element-1 {
+.circuit-element--rotation-1 {
   @include element-image;
 
   ::before {
@@ -49,7 +41,7 @@
   }
 }
 
-.circuit-element-2 {
+.circuit-element--rotation-2 {
   @include element-image;
 
   ::before {
@@ -57,7 +49,7 @@
   }
 }
 
-.circuit-element-3 {
+.circuit-element--rotation-3 {
   @include element-image;
 
   ::before {
