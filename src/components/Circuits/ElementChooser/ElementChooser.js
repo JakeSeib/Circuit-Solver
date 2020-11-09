@@ -1,16 +1,29 @@
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
-
 import '../../../index.scss'
 import './ElementChooser.scss'
-import getTransformClass from './getTransformClass.js'
+import { getTransformClass, checkPowered } from './utils'
 
-const ElementChooser = ({ type }) => {
+const ElementChooser = ({ position, board, setBoard }) => {
   const [direction, setDirection] = useState(0)
   const [highlighted, setHighlighted] = useState(false)
 
+  const row = position.split('-')[0]
+  const col = position.split('-')[1]
+
   const handleDirectionSwitch = (event) => {
     setDirection((direction + 1) % 4)
+    setBoard({
+      ...board,
+      [row]: {
+        ...board[row],
+        [col]: {
+          ...board[row][col],
+          connections: board[row][col].connections.map(i => (i + 1) % 4)
+        }
+      }
+    })
+    checkPowered()
   }
 
   const addHighlight = (event) => {
@@ -23,11 +36,11 @@ const ElementChooser = ({ type }) => {
 
   const elementJSX = (
     <Container
-      className={`circuit-element ${highlighted ? 'circuit-element--highlight' : ''} ${getTransformClass(direction)}`}
+      className={`circuit-element ${board[row][col].type} ${highlighted ? 'circuit-element--highlight' : ''} ${getTransformClass(direction)}`}
       onClick={event => { handleDirectionSwitch(event) }}
       onMouseEnter={event => { addHighlight(event) }}
       onMouseLeave={event => { removeHighlight(event) }}>
-      <p>{type} {direction}</p>
+      <p>{board[row][col].type} connections:{board[row][col].connections.join(',')}</p>
     </Container>
   )
 
