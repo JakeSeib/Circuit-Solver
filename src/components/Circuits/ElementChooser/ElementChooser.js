@@ -37,9 +37,9 @@ const ElementChooser = ({ position, board, setBoard }) => {
   const elementJSX = (
     <Container
       className={`circuit-element ${board[row][col].type} ${highlighted ? 'circuit-element--highlight' : ''} ${getTransformClass(direction)}`}
-      onClick={event => { handleDirectionSwitch(event) }}
-      onMouseEnter={event => { addHighlight(event) }}
-      onMouseLeave={event => { removeHighlight(event) }}>
+      onClick={handleDirectionSwitch}
+      onMouseEnter={addHighlight}
+      onMouseLeave={removeHighlight}>
       <p>{board[row][col].type} connections:{board[row][col].connections.join(',')}</p>
     </Container>
   )
