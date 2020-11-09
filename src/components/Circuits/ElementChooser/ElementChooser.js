@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import '../../../index.scss'
 import './ElementChooser.scss'
-import { getTransformClass, checkPowered } from './utils'
+import { getTransformClass, updatePowered } from './utils'
 
 const ElementChooser = ({ position, board, setBoard }) => {
   const [direction, setDirection] = useState(0)
@@ -23,7 +23,8 @@ const ElementChooser = ({ position, board, setBoard }) => {
         }
       }
     })
-    checkPowered()
+    // todo: only update state once at the end
+    updatePowered(board)
   }
 
   const addHighlight = (event) => {
