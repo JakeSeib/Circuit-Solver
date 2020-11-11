@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 // import AuthenticatedRoute from '../AuthenticatedRoute/AuthenticatedRoute'
 import AutoDismissAlert from '../AutoDismissAlert/AutoDismissAlert'
+import Home from '../Home/Home'
 import Circuit from '../Circuits/Circuit/Circuit'
 
 // unused auth routes and components
@@ -31,14 +32,9 @@ class App extends Component {
     super()
 
     this.state = {
-      // user: null,
       msgAlerts: []
     }
   }
-
-  // setUser = user => this.setState({ user })
-
-  // clearUser = () => this.setState({ user: null })
 
   msgAlert = ({ heading, message, variant }) => {
     this.setState({ msgAlerts: [...this.state.msgAlerts, { heading, message, variant }] })
@@ -57,10 +53,27 @@ class App extends Component {
             message={msgAlert.message}
           />
         ))}
-        <main className="container">
-          <Route path='/circuits' render={() => (
-            <Circuit msgAlert={this.msgAlert} />
-          )} />
+        <main className='container'>
+          <Switch>
+            <Route path='/species' render={() => (
+              <p>Under Construction</p>
+            )} />
+            <Route path='/circuits' render={() => (
+              <Circuit msgAlert={this.msgAlert} />
+            )} />
+            <Route path='/ship-logs' render={() => (
+              <p>Under Construction</p>
+            )} />
+            <Route path='/video-logs' render={() => (
+              <p>Under Construction</p>
+            )} />
+            <Route path='/diary' render={() => (
+              <p>Under Construction</p>
+            )} />
+            <Route path='/' render={() => (
+              <Home />
+            )} />
+          </Switch>
         </main>
       </Fragment>
     )
