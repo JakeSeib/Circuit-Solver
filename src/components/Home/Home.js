@@ -1,5 +1,9 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Button from 'react-bootstrap/Button'
+import './Home.scss'
 
 const Home = () => {
   const [redirectRoute, setRedirectRoute] = useState(null)
@@ -12,23 +16,33 @@ const Home = () => {
   if (redirectRoute) {
     appJSX = <Redirect to={`/${redirectRoute}`} />
   } else {
-    appJSX = <Fragment>
-      <div className='landing-link' data-route='species' onClick={handleHomeClick}>
-        Species Assessment
-      </div>
-      <div className='landing-link' data-route='circuits' onClick={handleHomeClick}>
-        AI Power Controls (ERIC: DO NOT TOUCH!!!)
-      </div>
-      <div className='landing-link' data-route='ship-logs' onClick={handleHomeClick}>
-        Ship Logs
-      </div>
-      <div className='landing-link' data-route='video-logs' onClick={handleHomeClick}>
-        Video Logs
-      </div>
-      <div className='landing-link' data-route='diary' onClick={handleHomeClick}>
-        Diary
-      </div>
-    </Fragment>
+    appJSX = <Container className='landing-container'>
+      <Row>
+        <Button className='landing-button' data-route='species' variant='success' onClick={handleHomeClick}>
+          Species Assessment
+        </Button>
+      </Row>
+      <Row>
+        <Button className='landing-button' data-route='circuits' variant='success' onClick={handleHomeClick}>
+          AI Power Controls ( ERIC: DO NOT TOUCH!!! )
+        </Button>
+      </Row>
+      <Row>
+        <Button className='landing-button' data-route='ship-logs' variant='success' onClick={handleHomeClick}>
+          Ship Logs
+        </Button>
+      </Row>
+      <Row>
+        <Button className='landing-button' data-route='video-logs' variant='success' onClick={handleHomeClick}>
+          Video Logs
+        </Button>
+      </Row>
+      <Row>
+        <Button className='landing-button' data-route='diary' variant='success' onClick={handleHomeClick}>
+          Diary
+        </Button>
+      </Row>
+    </Container>
   }
 
   return appJSX
