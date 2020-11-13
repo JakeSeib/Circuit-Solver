@@ -6,6 +6,7 @@ import './PassLock.scss'
 const PassLock = ({ setLocked, password }) => {
   const [passwordEntry, setPasswordEntry] = useState('')
   const [passwordCorrect, setPasswordCorrect] = useState(null)
+  const [timer, setTimer] = useState(null)
   const handleChange = event => {
     setPasswordEntry(event.target.value)
   }
@@ -14,21 +15,25 @@ const PassLock = ({ setLocked, password }) => {
     event.preventDefault()
     if (passwordEntry === password) {
       setPasswordCorrect(true)
+      if (timer) { clearTimeout(timer) }
       setTimeout(function () {
         setLocked(false)
       }, 5000)
     } else {
       setPasswordCorrect(false)
       setPasswordEntry('')
-      setTimeout(function () {
-        setPasswordCorrect(null)
-      }, 2000)
+      if (timer) { clearTimeout(timer) }
+      setTimer(setTimeout(function () {
+        if (!passwordCorrect) {
+          setPasswordCorrect(null)
+        }
+      }, 2000))
     }
   }
 
   let passLockJSX
   if (passwordCorrect) {
-    passLockJSX = <p className='password-accept-msg'>Password Accepted. Welcome, Glorbo.</p>
+    passLockJSX = <p className='password-msg password-accept-msg'>Password Accepted. Welcome, Glorbo.</p>
   } else {
     passLockJSX = <Fragment>
       <Form className='password-form' onSubmit={handleFormSubmit}>
@@ -46,7 +51,7 @@ const PassLock = ({ setLocked, password }) => {
         </Form.Group>
         <Button className='button-password' variant='success' size='lg' type='submit'>Unlock</Button>
       </Form>
-      <p>{passwordCorrect === false ? 'Incorrect Password' : ''}</p>
+      <p className='password-msg'>{passwordCorrect === false ? 'Incorrect Password' : ''}</p>
     </Fragment>
   }
   return passLockJSX

@@ -1,19 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
 
+@import '../styles/variables';
+
 $background-black: #000;
 $text-green: #008000;
 
-p {
+.button-password {
+  background-color: $background-black;
+  color: $text-green;
+}
+
+.password-msg {
   color: $text-green;
   font-family: 'Orbitron', sans-serif;
   font-size: 150%;
   margin-top: 5%;
   text-align: center;
-}
-
-.button-password {
-  background-color: $background-black;
-  color: $text-green;
 }
 
 .password-accept-msg {

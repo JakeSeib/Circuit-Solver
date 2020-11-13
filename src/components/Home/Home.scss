@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
 
-$background-black: #000;
-$text-green: #008000;
+@import '../styles/variables';
 
 body {
   background-color: $background-black;
