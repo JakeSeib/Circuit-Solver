@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
+
+$background-black: #000;
+$text-green: #008000;
+
+p {
+  color: $text-green;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 150%;
+  margin-top: 5%;
+  text-align: center;
+}
+
+.button-password {
+  background-color: $background-black;
+  color: $text-green;
+}
+
+.password-accept-msg {
+  font-size: 200%;
+  margin-top: 15%;
+}
+
+.password-form {
+  color: $text-green;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 150%;
+  margin-top: 5%;
+  text-align: center;
+}
+
+.password-field {
+  background-color: $background-black;
+  border-color: $text-green;
+  color: $text-green;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 150%;
+  font-weight: 900;
+  margin: 0 auto;
+  text-align: center;
+  width: 50%;
+  &:focus {
+    background-color: $background-black;
+    border-color: $text-green;
+    color: $text-green;
+  }
+}

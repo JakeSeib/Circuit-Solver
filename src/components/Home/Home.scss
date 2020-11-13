@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500&display=swap');
 
+$background-black: #000;
+$text-green: #008000;
+
 body {
-  background-color: black;
+  background-color: $background-black;
 }
 
 .landing-container {
@@ -9,9 +12,9 @@ body {
 }
 
 .landing-button {
-  background-color: black;
-  border-color: black;
-  color: green;
+  background-color: $background-black;
+  border-color: $background-black;
+  color: $text-green;
   font-family: 'Orbitron', sans-serif;
   font-size: x-large;
   margin: 1.2rem auto;
