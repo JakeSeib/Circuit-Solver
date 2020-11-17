@@ -2,18 +2,17 @@ import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container'
 import '../../../index.scss'
 import './ElementChooser.scss'
-import { getTransformClass, updatePowered } from './utils'
+import { getTransformClass } from './utils'
 
-const ElementChooser = ({ position, board, setBoard }) => {
+const ElementChooser = ({ position, board, setBoard, updatePowered }) => {
   const [direction, setDirection] = useState(0)
   const [highlighted, setHighlighted] = useState(false)
 
-  const row = position.split('-')[0]
-  const col = position.split('-')[1]
+  const [row, col] = position.split('-')
 
   const handleDirectionSwitch = (event) => {
     setDirection((direction + 1) % 4)
-    setBoard({
+    let updatedBoard = {
       ...board,
       [row]: {
         ...board[row],
@@ -22,9 +21,9 @@ const ElementChooser = ({ position, board, setBoard }) => {
           connections: board[row][col].connections.map(i => (i + 1) % 4)
         }
       }
-    })
-    // todo: only update state once at the end
-    updatePowered(board)
+    }
+    updatedBoard = updatePowered(updatedBoard)
+    setBoard(updatedBoard)
   }
 
   const addHighlight = (event) => {
@@ -41,7 +40,7 @@ const ElementChooser = ({ position, board, setBoard }) => {
       onClick={handleDirectionSwitch}
       onMouseEnter={addHighlight}
       onMouseLeave={removeHighlight}>
-      <p>{board[row][col].type} connections:{board[row][col].connections.join(',')}</p>
+      <p>{board[row][col].type} powered:{`${board[row][col].powered}`}</p>
     </Container>
   )
 
