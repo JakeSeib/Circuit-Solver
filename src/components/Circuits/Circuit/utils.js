@@ -7,33 +7,37 @@ import { cloneDeep } from 'lodash'
 // 3: left
 
 export const initBoard = {
-  0: {
+  elements: {
     0: {
-      type: 'wire',
-      connections: [1, 3],
-      powered: true
-    },
-    1: {
-      type: 'wire',
-      connections: [1, 3],
-      powered: true
-    },
-    2: {
-      type: 'resistor',
-      connections: [1, 3],
-      powered: true
-    },
-    3: {
-      type: 'source',
-      connections: [1, 3],
-      powered: true
-    },
-    4: {
-      type: 'wire',
-      connections: [1, 3],
-      powered: true
+      0: {
+        type: 'wire',
+        connections: [1, 3],
+        powered: true
+      },
+      1: {
+        type: 'wire',
+        connections: [1, 3],
+        powered: true
+      },
+      2: {
+        type: 'resistor',
+        connections: [1, 3],
+        powered: true
+      },
+      3: {
+        type: 'source',
+        connections: [1, 3],
+        powered: true
+      },
+      4: {
+        type: 'wire',
+        connections: [1, 3],
+        powered: true
+      }
     }
-  }
+  },
+  source: [0, 3],
+  powered: false
 }
 
 function inverseConnection (connection) {
@@ -51,30 +55,30 @@ function findConnections (board, coordinate) {
   // within the board's size connected to coordinate
   const connected = []
   const [row, col] = coordinate
-  const connections = board[row][col].connections
+  const connections = board.elements[row][col].connections
 
   connections.forEach(connection => {
     switch (connection) {
     case 0:
       if ((row - 1) >= 0) {
         const adjacentCoordinate = [row - 1, col]
-        if (board[row - 1][col].connections.includes(inverseConnection(connection))) {
+        if (board.elements[row - 1][col].connections.includes(inverseConnection(connection))) {
           connected.push(adjacentCoordinate)
         }
       }
       break
     case 1:
-      if ((col + 1) < Object.keys(board[0]).length) {
+      if ((col + 1) < Object.keys(board.elements[0]).length) {
         const adjacentCoordinate = [row, col + 1]
-        if (board[row][col + 1].connections.includes(inverseConnection(connection))) {
+        if (board.elements[row][col + 1].connections.includes(inverseConnection(connection))) {
           connected.push(adjacentCoordinate)
         }
       }
       break
     case 2:
-      if ((row + 1) < Object.keys(board).length) {
+      if ((row + 1) < Object.keys(board.elements).length) {
         const adjacentCoordinate = [row + 1, col]
-        if (board[row + 1][col].connections.includes(inverseConnection(connection))) {
+        if (board.elements[row + 1][col].connections.includes(inverseConnection(connection))) {
           connected.push(adjacentCoordinate)
         }
       }
@@ -82,7 +86,7 @@ function findConnections (board, coordinate) {
     case 3:
       if ((col - 1) >= 0) {
         const adjacentCoordinate = [row, col - 1]
-        if (board[row][col - 1].connections.includes(inverseConnection(connection))) {
+        if (board.elements[row][col - 1].connections.includes(inverseConnection(connection))) {
           connected.push(adjacentCoordinate)
         }
       }
@@ -94,8 +98,8 @@ function findConnections (board, coordinate) {
 }
 
 function setAllUnpowered (board) {
-  for (let i = 0; i < (Object.keys(board).length); i++) {
-    const row = board[i]
+  for (let i = 0; i < (Object.keys(board.elements).length); i++) {
+    const row = board.elements[i]
     for (let y = 0; y < (Object.keys(row).length); y++) {
       row[y].powered = false
     }
@@ -119,19 +123,35 @@ function hasVisited (coordinate, visited) {
   }
 }
 
-export function updatePowered (oldBoard, newBoard = setAllUnpowered(cloneDeep(oldBoard)), coordinate = [0, 3], visited = {}) {
-  // starting with power source (hardcoded as default coordinate), look for all
-  // connected circuit elements and set their powered status to true
+function updatePowered (board, coordinate = board.source, visited = {}) {
+  // starting with power source, look for all connected circuit elements and
+  // set their powered status to true
   const [row, col] = coordinate
   addVisited(coordinate, visited)
-  newBoard[row][col].powered = true
+  board.elements[row][col].powered = true
 
-  const connected = findConnections(newBoard, coordinate).filter(coord => {
+  const connected = findConnections(board, coordinate).filter(coord => {
     return !hasVisited(coord, visited)
   })
   for (let i = 0; i < connected.length; i++) {
-    updatePowered(oldBoard, newBoard, connected[i], visited)
+    updatePowered(board, connected[i], visited)
+    // if we make it back to source BEFORE continuing to the second connected
+    // in the loop, we've made a complete circuit
+    // that doesn't mean that every 'powered' element is part of the circuit though
   }
+
+  return board
+}
+
+export function updateBoard (oldBoard, coordinate) {
+  // given the previous board state and the 2-d coordinate of an element to be
+  // rotated, return a copy of the board with updated connections and power status
+  const newBoard = cloneDeep(oldBoard)
+  const [row, col] = coordinate
+
+  newBoard.elements[row][col].connections = newBoard.elements[row][col].connections.map(i => (i + 1) % 4)
+  setAllUnpowered(newBoard)
+  updatePowered(newBoard)
 
   return newBoard
 }
