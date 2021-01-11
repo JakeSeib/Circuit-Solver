@@ -20,7 +20,8 @@
     "react-dom": "^16.4.2",
     "react-router-dom": "^4.3.1",
     "resolve": "1.6.0",
-    "url-loader": "0.6.2"
+    "url-loader": "0.6.2",
+    "whatwg-fetch": "^2.0.4"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -39,7 +40,8 @@
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,mjs}",
-      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}"
+      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,mjs}",
+      "<rootDir>/circuit/?(*.)(spec|test).{js,jsx,mjs}"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",
