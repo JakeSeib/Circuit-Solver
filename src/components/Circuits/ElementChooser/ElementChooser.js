@@ -29,7 +29,7 @@ const ElementChooser = ({ position, board, setBoard, updateBoard }) => {
       onClick={handleDirectionSwitch}
       onMouseEnter={addHighlight}
       onMouseLeave={removeHighlight}>
-      <p>{board.elements[row][col].type} powered:{`${board.elements[row][col].powered}`}</p>
+      <p>{board.elements[row][col].type} powered:{`${board.elements[row][col].powered}`} connections:{`${board.elements[row][col].connections}`}</p>
     </Container>
   )
 

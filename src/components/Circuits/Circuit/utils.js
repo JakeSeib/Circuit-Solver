@@ -10,33 +10,30 @@ export const initBoard = {
   elements: {
     0: {
       0: {
-        type: 'wire',
-        connections: [1, 3],
+        type: 'source',
+        connections: [1, 2],
         powered: true
       },
       1: {
         type: 'wire',
-        connections: [1, 3],
+        connections: [2, 3],
         powered: true
-      },
-      2: {
+      }
+    },
+    1: {
+      0: {
         type: 'resistor',
-        connections: [1, 3],
+        connections: [0, 3],
         powered: true
       },
-      3: {
-        type: 'source',
-        connections: [1, 3],
-        powered: true
-      },
-      4: {
+      1: {
         type: 'wire',
-        connections: [1, 3],
+        connections: [0, 1],
         powered: true
       }
     }
   },
-  source: [0, 3],
+  source: [0, 0],
   powered: false
 }
 

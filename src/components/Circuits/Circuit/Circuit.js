@@ -18,9 +18,10 @@ const Circuit = () => {
       <Row>
         <Col><ElementChooser position='0-0' board={board} setBoard={setBoard} updateBoard={updateBoard}></ElementChooser></Col>
         <Col><ElementChooser position='0-1' board={board} setBoard={setBoard} updateBoard={updateBoard}></ElementChooser></Col>
-        <Col><ElementChooser position='0-2' board={board} setBoard={setBoard} updateBoard={updateBoard}></ElementChooser></Col>
-        <Col><ElementChooser position='0-3' board={board} setBoard={setBoard} updateBoard={updateBoard}></ElementChooser></Col>
-        <Col><ElementChooser position='0-4' board={board} setBoard={setBoard} updateBoard={updateBoard}></ElementChooser></Col>
+      </Row>
+      <Row>
+        <Col><ElementChooser position='1-0' board={board} setBoard={setBoard} updateBoard={updateBoard}></ElementChooser></Col>
+        <Col><ElementChooser position='1-1' board={board} setBoard={setBoard} updateBoard={updateBoard}></ElementChooser></Col>
       </Row>
     </Container>
   }
