@@ -1,12 +1,24 @@
 const { AffineExpression, solveLinearSystem } = require('./linearsystem')
 
-var bBothLeadsConnected = true
+// Todo:
+// [x] Write tests for basic circuit components and circuits
+//   [x] getNodes functions
+//   [x] finding voltage in circuits with connected and unconnected pieces
+//     [x] basic 1 vs 1 resistor circuit
+//     [x] unconnected element(s)
+//     [x] series resistors
+//     [x] parallel resistors
+//     [x] leads on incomplete circuit
+// [] Remove as much visual code as possible and tidy file
+// [] Write and test function to convert hash of positions to components and connections to list of circuit elements (not including leads)
+//   [] Start with tests to convert each element into components (batteries, wires (straight, turns and junctions), and resisters) in various rotations
+//   [] Then write tests for combinations of them
+// [] Write and test code for find voltage at relevant locations
+//   [] Start with updating previous function to to account for gauges (new type that creates wires but updates hash of nodes to test for voltage)
+//   [] Then write and test function to get voltage at all gauges and return them
+//   [] Refactor to not have to recalculate 4 times
 
 // Meter leads ----------------------------------------------------------------
-var LEAD_ANGLE = Math.PI / 12;
-var LEAD_PIN_LENGTH = 45;
-var LEAD_HALFWIDTH = 8;
-var LEAD_LENGTH = 240;
 function Lead(node, black) {
   this.black = black;
   this.node = node
@@ -278,7 +290,7 @@ function simulateCircuit(components) {
       blackLeadConnected = true;
     }
   }
-  bBothLeadsConnected = (redLeadConnected && blackLeadConnected) ||
+  const bBothLeadsConnected = (redLeadConnected && blackLeadConnected) ||
     nodeToStr(redLeadObj.getNodes()[0]) == nodeToStr(blackLeadObj.getNodes()[0]);
 
   // If both leads are connected, formulate and solve a system of linear
