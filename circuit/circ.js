@@ -11,12 +11,13 @@ const { AffineExpression, solveLinearSystem } = require('./linearsystem')
 //     [x] leads on incomplete circuit
 // [x] Remove as much visual code as possible and tidy file
 // [] Write and test function to convert hash of positions to components and connections to list of circuit elements (not including leads)
-//   [] Start with tests to convert each element into components (batteries, wires (straight, turns and junctions), and resisters) in various rotations
-//   [] Then write tests for combinations of them
+//   [] Tests for conversion of each element into components (batteries, wires (straight, turns and junctions), and resistors) in various rotations
+//   [] Tests for different combinations of components
 // [] Write and test code for find voltage at relevant locations
-//   [] Start with updating previous function to to account for gauges (new type that creates wires but updates hash of nodes to test for voltage)
-//   [] Then write and test function to get voltage at all gauges and return them
-//   [] Refactor to not have to recalculate 4 times
+//   [] Factor out old leadsconnected code
+//   [] Update previous function to to account for gauges (new type of element that creates wires but updates hash of nodes to test for voltage)
+//   [] Write and test function to get voltage at all gauges and return them
+//   [] (Optional) Refactor to not have to recalculate circuit for each gauge
 
 // Meter leads ----------------------------------------------------------------
 function Lead(node, black) {
