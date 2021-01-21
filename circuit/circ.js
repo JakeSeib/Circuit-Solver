@@ -1,4 +1,4 @@
-const { AffineExpression, solveLinearSystem } = require('./linearsystem')
+import { AffineExpression, solveLinearSystem } from './linearsystem'
 
 // Todo:
 // [x] Write tests for basic circuit components and circuits
@@ -20,7 +20,7 @@ const { AffineExpression, solveLinearSystem } = require('./linearsystem')
 //   [] (Optional) Refactor to not have to recalculate circuit for each gauge
 
 // Meter leads ----------------------------------------------------------------
-function Lead(node, black) {
+export function Lead(node, black) {
   this.black = black;
   this.node = node
 }
@@ -39,7 +39,7 @@ Lead.prototype.getBlack = lead_getBlack;
 Lead.prototype.isLead = true;
 
 // Resistor -------------------------------------------------------------------
-function Resistor(value, nodes) {
+export function Resistor(value, nodes) {
   this.value = value;
   this.nodes = nodes
 }
@@ -57,7 +57,7 @@ Resistor.prototype.getValue = resistor_getValue;
 Resistor.prototype.getNodes = resistor_getNodes;
 
 // VoltageSource --------------------------------------------------------------
-function VoltageSource(value, nodes) {
+export function VoltageSource(value, nodes) {
   this.value = value;
   this.nodes = nodes
 }
@@ -75,7 +75,7 @@ VoltageSource.prototype.getValue = vs_getValue;
 VoltageSource.prototype.getNodes = vs_getNodes;
 
 // Wire -----------------------------------------------------------------------
-function Wire(nodes) {
+export function Wire(nodes) {
   this.nodes = nodes
 }
 function w_getType() {
@@ -111,7 +111,7 @@ function voltageVariable(node) {
 
 // Simulation-related logic ---------------------------------------------------
 
-function simulateCircuit(components) {
+export function simulateCircuit(components) {
   // find the leads in components
   let blackLeadObj
   let redLeadObj
@@ -247,10 +247,10 @@ function simulateCircuit(components) {
   }
 }
 
-module.exports = {
-  Lead,
-  Resistor,
-  Wire,
-  VoltageSource,
-  simulateCircuit
-}
+// module.exports = {
+//   Lead,
+//   Resistor,
+//   Wire,
+//   VoltageSource,
+//   simulateCircuit
+// }

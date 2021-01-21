@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import ElementChooser from '../ElementChooser/ElementChooser'
 import PassLock from '../../PassLock/PassLock'
-import { initBoard, updateBoard } from './utils'
+import { initBoard, updateBoard } from './circuitUtils'
 
 const Circuit = () => {
   const [board, setBoard] = useState(initBoard)

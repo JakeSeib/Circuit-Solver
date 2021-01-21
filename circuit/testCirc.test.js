@@ -1,9 +1,4 @@
-const { Lead,
-        Resistor,
-        VoltageSource,
-        Wire,
-        simulateCircuit
-      } = require('./circ')
+import { Lead, Resistor, VoltageSource, Wire, simulateCircuit } from './circ'
 
 test('Basic Lead methods', () => {
   const lead = new Lead([1, 1], false)

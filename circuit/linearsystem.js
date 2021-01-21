@@ -28,7 +28,7 @@ function nearZero(a) {
 // coeffs: a list of coefficients for the variables in vars.
 // vars: a list of strings naming variables.
 // c: constant term
-function AffineExpression(coeffs, vars, c) {
+export function AffineExpression(coeffs, vars, c) {
   this.coeffs = [];
   this.empty = true;
   for (var i in vars) {
@@ -150,7 +150,7 @@ AffineExpression.prototype.toString = AE_toString;
 // Otherwise, return an array with a key for each variable. If the variable has
 // a unique solution S, then the associated value is S. Otherwise, if the
 // variable is underconstrained, then the associated value is NaN.
-function solveLinearSystem(system) {
+export function solveLinearSystem(system) {
   var backVars = [];
   var backExprs = [];
 
@@ -200,9 +200,4 @@ function solveLinearSystem(system) {
   }
 
   return soln;
-}
-
-module.exports = {
-  AffineExpression,
-  solveLinearSystem
 }

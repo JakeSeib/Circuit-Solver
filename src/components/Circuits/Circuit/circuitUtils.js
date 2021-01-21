@@ -1,12 +1,14 @@
 import { cloneDeep } from 'lodash'
-
-// connections:
-// 0: up
-// 1: right
-// 2: down
-// 3: left
+import 
 
 export const initBoard = {
+
+  // connections:
+  // 0: up
+  // 1: right
+  // 2: down
+  // 3: left
+
   elements: {
     0: {
       0: {
@@ -135,13 +137,12 @@ function updatePowered (board, coordinate = board.source, visited = {}) {
   })
   for (let i = 0; i < connected.length; i++) {
     updatePowered(board, connected[i], visited)
-    // if we make it back to source BEFORE continuing to the second connected
-    // in the loop, we've made a complete circuit
-    // that doesn't mean that every 'powered' element is part of the circuit though
   }
 
   return board
 }
+
+export function
 
 export function updateBoard (oldBoard, coordinate) {
   // given the previous board state and the 2-d coordinate of an element to be
