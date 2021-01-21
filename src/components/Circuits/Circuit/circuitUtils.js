@@ -189,7 +189,6 @@ export function boardToComponents (board) {
   // takes a board and returns an array of components (Leads, Resistors, Wires,
   // and a VoltageSource) for simulateCircuit to use
 
-  // todo: convert position & orientation of board elements to nodes in component arguments
   const components = []
 
   for (let row = 0; row < Object.keys(board.elements).length; row++) {
@@ -217,6 +216,7 @@ export function boardToComponents (board) {
 export function updateBoard (oldBoard, coordinate) {
   // given the previous board state and the 2-d coordinate of an element to be
   // rotated, return a copy of the board with updated connections and power status
+
   const newBoard = cloneDeep(oldBoard)
   const [row, col] = coordinate
 
