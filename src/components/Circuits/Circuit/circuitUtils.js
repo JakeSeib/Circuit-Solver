@@ -1,14 +1,7 @@
 import { cloneDeep } from 'lodash'
-// import { Lead, Resistor, VoltageSource, Wire, simulateCircuit } from '../../../../solveCircuit/circuitSim'
+import { Lead, Resistor, VoltageSource, Wire, simulateCircuit } from '../../../../solveCircuit/circuitSim'
 
 export const initBoard = {
-
-  // connections:
-  // 0: up
-  // 1: right
-  // 2: down
-  // 3: left
-
   elements: {
     0: {
       0: {
@@ -24,11 +17,13 @@ export const initBoard = {
       2: {
         type: 'resistor',
         connections: [1, 3],
+        value: 10,
         powered: true
       },
       3: {
         type: 'source',
         connections: [1, 3],
+        value: 10,
         powered: true
       },
       4: {
@@ -55,6 +50,13 @@ function inverseConnection (connection) {
 function findConnections (board, coordinate) {
   // given a board and coordinate [x, y], return a list of all coordinates
   // within the board's size connected to coordinate
+
+  // connections:
+  // 0: up
+  // 1: right
+  // 2: down
+  // 3: left
+
   const connected = []
   const [row, col] = coordinate
   const connections = board.elements[row][col].connections
@@ -142,9 +144,74 @@ function updatePowered (board, coordinate = board.source, visited = {}) {
   return board
 }
 
+export function getNodes (row, col, connections) {
+  // given row, col, and connections, return an array of nodes the element is
+  // connected to
+
+  // for node purposes, board operates on a (m + 3) x (n + 3) grid, where m, n
+  // are the numbers of rows and cols. Every element is centered on a 3x3 grid,
+  // with center space occupied by the element itself, and the outer sides
+  // reserved for possible nodes connecting elements to each other
+
+  // connections:
+  // 0: up
+  // 1: right
+  // 2: down
+  // 3: left
+
+  const [gridRow, gridCol] = [(row * 3) + 1, (col * 3) + 1]
+  const nodes = []
+
+  connections.forEach(connection => {
+    let node
+    switch (connection) {
+    case 0:
+      node = [gridRow - 1, gridCol]
+      break
+    case 1:
+      node = [gridRow, gridCol + 1]
+      break
+    case 2:
+      node = [gridRow + 1, gridCol]
+      break
+    case 3:
+      node = [gridRow, gridCol - 1]
+      break
+    }
+
+    nodes.push(node)
+  })
+
+  return nodes
+}
+
 export function boardToComponents (board) {
-  //
-  return board
+  // takes a board and returns an array of components (Leads, Resistors, Wires,
+  // and a VoltageSource) for simulateCircuit to use
+
+  // todo: convert position & orientation of board elements to nodes in component arguments
+  const components = []
+
+  for (let row = 0; row < Object.keys(board.elements).length; row++) {
+    for (let col = 0; col < Object.keys(board.elements[0].length); col++) {
+      const element = board[row][col]
+      const nodes = getNodes(row, col, element.connections)
+      let component
+      switch (element.type) {
+      case 'resistor':
+        component = new Resistor(element.value, nodes)
+        break
+      case 'source':
+        component = new VoltageSource(element.value, nodes)
+        break
+      case 'wire':
+        component = new Wire(nodes)
+        break
+      }
+      components.push(component)
+    }
+  }
+  return components
 }
 
 export function updateBoard (oldBoard, coordinate) {
