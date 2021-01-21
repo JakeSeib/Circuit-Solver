@@ -246,11 +246,3 @@ export function simulateCircuit(components) {
     return 'floating';
   }
 }
-
-// module.exports = {
-//   Lead,
-//   Resistor,
-//   Wire,
-//   VoltageSource,
-//   simulateCircuit
-// }

@@ -1,4 +1,4 @@
-import { Lead, Resistor, VoltageSource, Wire, simulateCircuit } from './circ'
+import { Lead, Resistor, VoltageSource, Wire, simulateCircuit } from './circuitSim'
 
 test('Basic Lead methods', () => {
   const lead = new Lead([1, 1], false)

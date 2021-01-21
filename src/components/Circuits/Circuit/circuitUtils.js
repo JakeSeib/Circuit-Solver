@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import 
+// import { Lead, Resistor, VoltageSource, Wire, simulateCircuit } from '../../../../solveCircuit/circuitSim'
 
 export const initBoard = {
 
@@ -142,7 +142,10 @@ function updatePowered (board, coordinate = board.source, visited = {}) {
   return board
 }
 
-export function
+export function boardToComponents (board) {
+  //
+  return board
+}
 
 export function updateBoard (oldBoard, coordinate) {
   // given the previous board state and the 2-d coordinate of an element to be
