@@ -10,9 +10,9 @@ import { AffineExpression, solveLinearSystem } from './linearsystem'
 //     [x] parallel resistors
 //     [x] leads on incomplete circuit
 // [x] Remove as much visual code as possible and tidy file
-// [] Write and test function to convert hash of positions to components and connections to list of circuit elements (not including leads)
+// [x] Write and test function to convert hash of positions to components and connections to list of circuit elements (not including leads)
 //   [x] Tests for conversion of each element into components (batteries, wires (straight, turns and junctions), and resistors) in various rotations
-//   [] Tests for different combinations of components
+//   [x] Tests for different combinations of components
 // [] Write and test code for find voltage at relevant locations
 //   [] Factor out old leadsconnected code
 //   [] Update previous function to to account for gauges (new type of element that creates wires but updates hash of nodes to test for voltage)

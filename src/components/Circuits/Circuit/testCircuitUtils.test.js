@@ -66,4 +66,34 @@ test('boardToComponents makes components of each type', () => {
   expect(components[0].getType()).toBe('resistor')
   expect(components[0].getValue()).toBe(10)
   expect(components[0].getNodes()).toEqual([[1, 2], [1, 0]])
+  expect(components[1].getType()).toBe('wire')
+  expect(components[2].getType()).toBe('voltagesource')
+  expect(components[2].getValue()).toBe(10)
+  expect(components[3].getType()).toBe('wire')
+})
+
+test('boardToComponents with 3 x 3 board', () => {
+  board.elements[0][2] = {
+    type: 'resistor',
+    connections: [0, 2],
+    value: 5,
+    powered: true
+  }
+  board.elements[1][2] = {
+    type: 'wire',
+    connections: [0, 2],
+    powered: true
+  }
+  const components = boardToComponents(board)
+  expect(components.length).toBe(6)
+  expect(components[0].getType()).toBe('resistor')
+  expect(components[0].getValue()).toBe(10)
+  expect(components[0].getNodes()).toEqual([[1, 2], [1, 0]])
+  expect(components[1].getType()).toBe('wire')
+  expect(components[2].getType()).toBe('resistor')
+  expect(components[2].getValue()).toBe(5)
+  expect(components[3].getType()).toBe('voltagesource')
+  expect(components[3].getValue()).toBe(10)
+  expect(components[4].getType()).toBe('wire')
+  expect(components[5].getType()).toBe('wire')
 })
