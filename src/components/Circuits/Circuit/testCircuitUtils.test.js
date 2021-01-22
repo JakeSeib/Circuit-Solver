@@ -28,6 +28,42 @@ test('getNodes left/down connections', () => {
   expect(getNodes(3, 3, [3, 2])).toEqual([[10, 9], [11, 10]]) // center = [10, 10]
 })
 
-// test('Dummy test', () => {
-//   expect(boardToComponents('hello')).toBe('hello')
-// })
+const board = {
+  elements: {
+    0: {
+      0: {
+        type: 'resistor',
+        connections: [1, 3],
+        value: 10,
+        powered: true
+      },
+      1: {
+        type: 'wire',
+        connections: [1, 3],
+        powered: true
+      }
+    },
+    1: {
+      0: {
+        type: 'source',
+        connections: [1, 3],
+        value: 10,
+        powered: true
+      },
+      1: {
+        type: 'wire',
+        connections: [1, 3],
+        powered: true
+      }
+    }
+  },
+  source: [1, 0]
+}
+
+test('boardToComponents makes components of each type', () => {
+  const components = boardToComponents(board)
+  expect(components.length).toBe(4)
+  expect(components[0].getType()).toBe('resistor')
+  expect(components[0].getValue()).toBe(10)
+  expect(components[0].getNodes()).toEqual([[1, 2], [1, 0]])
+})

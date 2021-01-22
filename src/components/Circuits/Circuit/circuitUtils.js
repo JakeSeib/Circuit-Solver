@@ -33,8 +33,7 @@ export const initBoard = {
       }
     }
   },
-  source: [0, 3],
-  powered: false
+  source: [0, 3]
 }
 
 function inverseConnection (connection) {
@@ -192,8 +191,8 @@ export function boardToComponents (board) {
   const components = []
 
   for (let row = 0; row < Object.keys(board.elements).length; row++) {
-    for (let col = 0; col < Object.keys(board.elements[0].length); col++) {
-      const element = board[row][col]
+    for (let col = 0; col < Object.keys(board.elements[0]).length; col++) {
+      const element = board.elements[row][col]
       const nodes = getNodes(row, col, element.connections)
       let component
       switch (element.type) {
