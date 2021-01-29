@@ -225,3 +225,16 @@ export function updateBoard (oldBoard, coordinate) {
 
   return newBoard
 }
+
+export function measureGaugeVoltage (board, gaugePosition) {
+  // given the board and the position of the gauge to measure voltage at as
+  // [row, col], return a string representing the measurement of the gauge in Volts
+
+  const components = boardToComponents(board)
+  const [gaugeRow, gaugeCol] = gaugePosition
+  const gaugeNodes = getNodes(gaugeRow, gaugeCol, board.elements[gaugeRow][gaugeCol].connections)
+  components.unshift(new Lead(gaugeNodes[0], true))
+  components.unshift(new Lead(gaugeNodes[1], false))
+
+  return simulateCircuit(components)
+}

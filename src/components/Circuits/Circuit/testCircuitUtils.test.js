@@ -1,4 +1,4 @@
-import { getNodes, boardToComponents } from './circuitUtils'
+import { getNodes, boardToComponents, measureGaugeVoltage } from './circuitUtils'
 
 test('getNodes left/right connections', () => {
   expect(getNodes(0, 0, [1, 3])).toEqual([[1, 2], [1, 0]]) // center = [1, 1]
@@ -96,4 +96,35 @@ test('boardToComponents with 3 x 3 board', () => {
   expect(components[3].getValue()).toBe(10)
   expect(components[4].getType()).toBe('wire')
   expect(components[5].getType()).toBe('wire')
+})
+
+test('measureGaugeVoltage 1 wire', () => {
+  const testBoard = {
+    elements: {
+      0: {
+        0: {
+          type: 'wire',
+          connections: [0, 2],
+          powered: false
+        }
+      }
+    }
+  }
+  expect(measureGaugeVoltage(testBoard, [0, 0])).toBe('0.00000 V')
+})
+
+test('measureGaugeVoltage 1 source', () => {
+  const testBoard = {
+    elements: {
+      0: {
+        0: {
+          type: 'source',
+          connections: [0, 2],
+          powered: false,
+          value: 7
+        }
+      }
+    }
+  }
+  expect(measureGaugeVoltage(testBoard, [0, 0])).toBe('7.00000 V')
 })
