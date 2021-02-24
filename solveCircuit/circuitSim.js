@@ -15,7 +15,7 @@ import { AffineExpression, solveLinearSystem } from './linearsystem'
 //   [x] Tests for different combinations of components
 // [] Write and test code for find voltage at relevant locations
 //   [x] Write and test function to measure voltage at 1 gauge location
-//   [] Factor out old leadsconnected code
+//   [x] Factor out old leadsconnected code
 //   [] Update boardToComponents to to account for gauges (new type of element that creates wires but updates hash of nodes to test for voltage)
 //   [] Write and test function to get voltage at all gauges and return them
 //   [] (Optional) Refactor to not have to recalculate circuit for each gauge
@@ -156,94 +156,75 @@ export function simulateCircuit(components) {
     }
   }
 
-  // Determine whether the scope leads are connected to nodes.
-  var redLeadConnected = false;
-  var blackLeadConnected = false;
-  for (var nodeStr in nodes) {
-    if (nodeStr == nodeToStr(redLeadObj.getNodes()[0])) {
-      redLeadConnected = true;
+  // formulate and solve a system of linear equations to find the red lead voltage.
+  var system = [];
+
+  // Write an equation for KCL on each node.
+  for (var nstr in nodes) {
+    var orientations = [];
+    var currents = [];
+    // Enumerate all placed objects that touch the node.
+    for (var objIndex in nodes[nstr]) {
+      var obj = nodes[nstr][objIndex];
+      // Use the index of the object in placedObjects to uniquely name the
+      // associated current variable.
+      var objectId = placedObjects.indexOf(obj);
+      if (objectId > -1) {
+        // Determine the orientation of the current into this object.
+        orientations.push((nstr == nodeToStr(obj.getNodes()[0])) ? 1 : -1);
+        currents.push('i[' + objectId + ']');
+      }
     }
-    if (nodeStr == nodeToStr(blackLeadObj.getNodes()[0])) {
-      blackLeadConnected = true;
+    // sum_currents = 0 when orientations are respected
+    system.push(new AffineExpression(orientations, currents, 0));
+  }
+
+  // Write a voltage equation on each element.
+  for (var objectId in placedObjects) {
+    var obj = placedObjects[objectId];
+    nodes = obj.getNodes();
+    var node1name = voltageVariable(nodes[0]);
+    var node2name = voltageVariable(nodes[1]);
+    if (obj.getType() == 'resistor') {
+      var currentname = 'i[' + objectId + ']';
+      // V1 - V2 - R i == 0
+      system.push(
+        new AffineExpression([1, -1, -obj.getValue()],
+                             [node1name, node2name, currentname],
+                             0));
+    } else if (obj.getType() == 'wire') {
+      // V1 == V2
+      system.push(new AffineExpression([1, -1], [node1name, node2name], 0));
+    } else if (obj.getType() == 'voltagesource') {
+      // V1 - V2 == V_s
+      system.push(new AffineExpression([1, -1],
+                                       [node1name, node2name],
+                                       obj.getValue()));
     }
   }
-  const bBothLeadsConnected = (redLeadConnected && blackLeadConnected) ||
-    nodeToStr(redLeadObj.getNodes()[0]) == nodeToStr(blackLeadObj.getNodes()[0]);
 
-  // If both leads are connected, formulate and solve a system of linear
-  // equations to find the red lead voltage.
-  if (bBothLeadsConnected) {
-    var system = [];
 
-    // Write an equation for KCL on each node.
-    for (var nstr in nodes) {
-      var orientations = [];
-      var currents = [];
-      // Enumerate all placed objects that touch the node.
-      for (var objIndex in nodes[nstr]) {
-        var obj = nodes[nstr][objIndex];
-        // Use the index of the object in placedObjects to uniquely name the
-        // associated current variable.
-        var objectId = placedObjects.indexOf(obj);
-        if (objectId > -1) {
-          // Determine the orientation of the current into this object.
-          orientations.push((nstr == nodeToStr(obj.getNodes()[0])) ? 1 : -1);
-          currents.push('i[' + objectId + ']');
-        }
-      }
-      // sum_currents = 0 when orientations are respected
-      system.push(new AffineExpression(orientations, currents, 0));
+
+  // Ground the black lead.
+  var blackLeadVoltageName = voltageVariable(blackLeadObj.getNodes()[0]);
+  system.push(new AffineExpression([1], [blackLeadVoltageName], 0));
+
+  // Display the voltage at the red lead.
+  var voltageMsg;
+  try {
+    var soln = solveLinearSystem(system);
+    var v = soln[voltageVariable(redLeadObj.getNodes()[0])];
+    if (isNaN(v)) {
+      voltageMsg = 'floating';
+    } else {
+      voltageMsg = v.toPrecision(6) + ' V';
     }
-
-    // Write a voltage equation on each element.
-    for (var objectId in placedObjects) {
-      var obj = placedObjects[objectId];
-      nodes = obj.getNodes();
-      var node1name = voltageVariable(nodes[0]);
-      var node2name = voltageVariable(nodes[1]);
-      if (obj.getType() == 'resistor') {
-        var currentname = 'i[' + objectId + ']';
-        // V1 - V2 - R i == 0
-        system.push(
-          new AffineExpression([1, -1, -obj.getValue()],
-                               [node1name, node2name, currentname],
-                               0));
-      } else if (obj.getType() == 'wire') {
-        // V1 == V2
-        system.push(new AffineExpression([1, -1], [node1name, node2name], 0));
-      } else if (obj.getType() == 'voltagesource') {
-        // V1 - V2 == V_s
-        system.push(new AffineExpression([1, -1],
-                                         [node1name, node2name],
-                                         obj.getValue()));
-      }
+  } catch (e) {
+    if (e.message == 'inconsistent') {
+      voltageMsg = 'short circuit';
+    } else {
+      throw e;
     }
-
-
-
-    // Ground the black lead.
-    var blackLeadVoltageName = voltageVariable(blackLeadObj.getNodes()[0]);
-    system.push(new AffineExpression([1], [blackLeadVoltageName], 0));
-
-    // Display the voltage at the red lead.
-    var voltageMsg;
-    try {
-      var soln = solveLinearSystem(system);
-      var v = soln[voltageVariable(redLeadObj.getNodes()[0])];
-      if (isNaN(v)) {
-        voltageMsg = 'floating';
-      } else {
-        voltageMsg = v.toPrecision(6) + ' V';
-      }
-    } catch (e) {
-      if (e.message == 'inconsistent') {
-        voltageMsg = 'short circuit';
-      } else {
-        throw e;
-      }
-    }
-    return voltageMsg;
-  } else {
-    return 'floating';
   }
+  return voltageMsg;
 }
