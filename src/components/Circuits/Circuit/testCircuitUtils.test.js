@@ -62,15 +62,17 @@ const board = {
 
 test('boardToComponents makes components of each type', () => {
   const components = boardToComponents(board)
-  expect(components.length).toBe(4)
+  expect(components.length).toBe(6)
   expect(components[0].getType()).toBe('resistor')
   expect(components[0].getValue()).toBe(10)
   expect(components[0].getNodes()).toEqual([[1, 2], [2, 1]])
   expect(components[1].getType()).toBe('wire')
-  expect(components[2].getType()).toBe('voltagesource')
-  expect(components[2].getValue()).toBe(10)
-  expect(components[3].getType()).toBe('wire')
-  expect(components[3].getNodes()).toEqual([[3, 4], [3, 2]])
+  expect(components[2].getType()).toBe('wire')
+  expect(components[3].getType()).toBe('voltagesource')
+  expect(components[3].getValue()).toBe(10)
+  expect(components[4].getType()).toBe('wire')
+  expect(components[5].getType()).toBe('wire')
+  expect(components[5].getNodes()).toEqual([[3, 2], [3, 3]])
 })
 
 test('boardToComponents with 2 x 3 board', () => {
@@ -86,19 +88,23 @@ test('boardToComponents with 2 x 3 board', () => {
     powered: true
   }
   const components = boardToComponents(board)
-  expect(components.length).toBe(6)
+  expect(components.length).toBe(9)
   expect(components[0].getType()).toBe('resistor')
   expect(components[0].getValue()).toBe(10)
   expect(components[0].getNodes()).toEqual([[1, 2], [2, 1]])
   expect(components[1].getType()).toBe('wire')
-  expect(components[2].getType()).toBe('resistor')
-  expect(components[2].getValue()).toBe(5)
-  expect(components[3].getType()).toBe('voltagesource')
-  expect(components[3].getValue()).toBe(10)
-  expect(components[4].getType()).toBe('wire')
-  expect(components[4].getNodes()).toEqual([[3, 4], [3, 2]])
+  expect(components[2].getType()).toBe('wire')
+  expect(components[3].getType()).toBe('resistor')
+  expect(components[3].getValue()).toBe(5)
+  expect(components[3].getNodes()).toEqual([[2, 5], [1, 4]])
+  expect(components[4].getType()).toBe('voltagesource')
+  expect(components[4].getValue()).toBe(10)
   expect(components[5].getType()).toBe('wire')
-  expect(components[5].getNodes()).toEqual([[2, 5], [3, 4]])
+  expect(components[5].getNodes()).toEqual([[3, 4], [3, 3]])
+  expect(components[6].getType()).toBe('wire')
+  expect(components[6].getNodes()).toEqual([[3, 2], [3, 3]])
+  expect(components[7].getType()).toBe('wire')
+  expect(components[8].getType()).toBe('wire')
 })
 
 test('measureGaugeVoltage 1 wire', () => {
@@ -132,7 +138,7 @@ test('measureGaugeVoltage 1 source', () => {
   expect(measureGaugeVoltage(testBoard, [0, 0])).toBe('7.00000 V')
 })
 
-test('measureGaugeVoltage 4 component series', () => {
+test('measureGaugeVoltage 4 components series', () => {
   const testBoard = {
     elements: {
       0: {
@@ -165,16 +171,78 @@ test('measureGaugeVoltage 4 component series', () => {
     source: [1, 0]
   }
   expect(measureGaugeVoltage(testBoard, [1, 0])).toBe('7.00000 V')
-  // expect(measureGaugeVoltage(testBoard, [0, 0])).toBe('7.00000 V')
+  expect(measureGaugeVoltage(testBoard, [0, 0])).toBe('-7.00000 V')
 })
 
-// test('measureGaugeVoltage 6 component series', () => {
-//   const testBoard = board
-//   const components = boardToComponents(testBoard)
-//   expect(components.length).toBe(6)
-//   expect(measureGaugeVoltage(testBoard, [0, 0])).toBe('6.66667 V')
-//   expect(measureGaugeVoltage(testBoard, [0, 2])).toBe('3.33333 V')
-// })
+test('measureGaugeVoltage 6 components series', () => {
+  expect(measureGaugeVoltage(board, [0, 0])).toBe('-6.66667 V')
+  expect(measureGaugeVoltage(board, [0, 2])).toBe('-3.33333 V')
+})
 
-// test('measureGaugeVoltage 6 component parallel', () => {
-// })
+test('measureGaugeVoltage 9 components parallel', () => {
+  const testBoard = {
+    elements: {
+      0: {
+        0: {
+          type: 'resistor',
+          connections: [1, 2],
+          value: 5,
+          powered: true
+        },
+        1: {
+          type: 'wire',
+          connections: [1, 2, 3],
+          powered: true
+        },
+        2: {
+          type: 'wire',
+          connections: [2, 3],
+          powered: true
+        }
+      },
+      1: {
+        0: {
+          type: 'source',
+          connections: [0, 2],
+          value: 10,
+          powered: true
+        },
+        1: {
+          type: 'resistor',
+          connections: [0, 2],
+          value: 10,
+          powered: true
+        },
+        2: {
+          type: 'resistor',
+          connections: [0, 2],
+          value: 10,
+          powered: true
+        }
+      },
+      2: {
+        0: {
+          type: 'wire',
+          connections: [0, 1],
+          powered: true
+        },
+        1: {
+          type: 'wire',
+          connections: [0, 1, 3],
+          powered: true
+        },
+        2: {
+          type: 'wire',
+          connections: [0, 3],
+          powered: true
+        }
+      }
+    },
+    source: [1, 0]
+  }
+
+  expect(measureGaugeVoltage(testBoard, [1, 0])).toBe('10.0000 V')
+  expect(measureGaugeVoltage(testBoard, [0, 0])).toBe('-5.00000 V')
+  expect(measureGaugeVoltage(testBoard, [1, 1])).toBe('5.00000 V')
+  expect(measureGaugeVoltage(testBoard, [1, 2])).toBe('5.00000 V')
+})

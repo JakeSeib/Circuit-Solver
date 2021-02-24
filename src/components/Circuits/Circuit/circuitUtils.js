@@ -194,19 +194,19 @@ export function boardToComponents (board) {
     for (let col = 0; col < Object.keys(board.elements[0]).length; col++) {
       const element = board.elements[row][col]
       const nodes = getNodes(row, col, element.connections)
-      let component
       switch (element.type) {
       case 'resistor':
-        component = new Resistor(element.value, nodes)
+        components.push(new Resistor(element.value, nodes))
         break
       case 'source':
-        component = new VoltageSource(element.value, nodes)
+        components.push(new VoltageSource(element.value, nodes))
         break
       case 'wire':
-        component = new Wire(nodes)
+        nodes.forEach(node => {
+          components.push(new Wire([node, [(row * 2) + 1, (col * 2) + 1]]))
+        })
         break
       }
-      components.push(component)
     }
   }
   return components
@@ -235,7 +235,6 @@ export function measureGaugeVoltage (board, gaugePosition) {
   const gaugeNodes = getNodes(gaugeRow, gaugeCol, board.elements[gaugeRow][gaugeCol].connections)
   components.unshift(new Lead(gaugeNodes[0], true))
   components.unshift(new Lead(gaugeNodes[1], false))
-  console.log('components', components)
 
   return simulateCircuit(components)
 }

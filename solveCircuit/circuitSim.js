@@ -14,7 +14,7 @@ import { AffineExpression, solveLinearSystem } from './linearsystem'
 //   [x] Tests for conversion of each element into components (batteries, wires (straight, turns and junctions), and resistors) in various rotations
 //   [x] Tests for different combinations of components
 // [] Write and test code for find voltage at relevant locations
-//   [] Write and test function to measure voltage at 1 gauge location
+//   [x] Write and test function to measure voltage at 1 gauge location
 //   [] Factor out old leadsconnected code
 //   [] Update boardToComponents to to account for gauges (new type of element that creates wires but updates hash of nodes to test for voltage)
 //   [] Write and test function to get voltage at all gauges and return them
