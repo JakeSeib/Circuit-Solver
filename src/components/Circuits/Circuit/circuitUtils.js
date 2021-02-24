@@ -158,7 +158,7 @@ export function getNodes (row, col, connections) {
   // 2: down
   // 3: left
 
-  const [gridRow, gridCol] = [(row * 3) + 1, (col * 3) + 1]
+  const [gridRow, gridCol] = [(row * 2) + 1, (col * 2) + 1]
   const nodes = []
 
   connections.forEach(connection => {
@@ -235,6 +235,7 @@ export function measureGaugeVoltage (board, gaugePosition) {
   const gaugeNodes = getNodes(gaugeRow, gaugeCol, board.elements[gaugeRow][gaugeCol].connections)
   components.unshift(new Lead(gaugeNodes[0], true))
   components.unshift(new Lead(gaugeNodes[1], false))
+  console.log('components', components)
 
   return simulateCircuit(components)
 }
